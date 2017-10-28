@@ -1,2 +1,2 @@
 # buckpesch.io
-Personal website
+Personal website of Sebastian Buckpesch.

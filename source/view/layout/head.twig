@@ -1,0 +1,162 @@
+<?php
+// Set meta data
+$title       = strip_tags(__c('app_company_name')) . " - " . __c('mod_share_title');
+$description = __c('mod_share_desc');
+$type        = "website";
+$url         = "";
+$image       = "";
+$site_name   = strip_tags(__c('app_company_name'));
+
+// Check if we need to use the meta data of a photo
+$item_id = getvalue($_GET, "item_id", '');
+if ($item_id)
+{
+    $item        = $_module->getModel("item", array($item_id));
+$title       = $item->getTitle() . " - " . $title;
+$description = $item->getDescription();
+$title       = htmlentities($title, ENT_QUOTES, "UTF-8");
+$description = htmlentities($description, ENT_QUOTES, "UTF-8");
+$type        = $item->getType();
+$url         = url_full("items/" . $item->getId());
+$image       = $item->getPicture();
+}
+?>
+
+<head>
+    {% block head %}
+        <title><?php echo $title ?></title>
+
+        <!-- for mobile device -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta name="description" content="<?php echo $description ?>">
+        <meta name="author" content="iConsultants GmbH - www.app-arena.com">
+
+        <!-- Facebook Meta Data -->
+        <meta property="fb:app_id" content="<?php echo $this->global->instance['fb_app_id']; ?>"/>
+        <meta property="og:title" content="<?php echo $title ?>"/>
+        <meta property="og:type" content="<?php echo $type ?>"/>
+        <meta property="og:url" content="<?php echo $url ?>"/>
+        <meta property="og:image" content="<?php echo $image ?>"/>
+        <meta property="og:site_name" content="<?php echo $site_name ?>"/>
+        <meta property="og:description" content="<?php echo $description ?>"/>
+
+        <!--IOS Improvments -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+
+        <link rel="icon" type="image/png" href="<?php echo __c('favicon'); ?>"/>
+
+        {% include 'layout/head.css.twig' %}
+
+        <!--global variable -->
+        <script>
+            var HTTP_REFERFER = '<?php echo getGlobal("HTTP_REFERER"); ?>';
+            var request_uri   = '<?php echo $_SERVER['
+            REQUEST_URI
+            ']; ?>';
+            var baseurl = '<?php echo getGlobal('
+            baseurl
+            '); ?>';
+            var i_id = '<?php echo getGlobal('
+            i_id
+            '); ?>';
+
+            var fb_app_id = '<?php echo $this->global->instance['
+            fb_app_id
+            '];?>';
+            var fb_canvas_url = '<?php echo $this->global->instance['
+            base_url
+            '];?>';
+            var fb_app_url = '<?php echo $this->global->instance['
+            fb_app_namespace
+            '];?>';
+
+            var user_login_type = "<?php echo session_user_get("
+            login_type
+            ",'');?>";//email,facebook, ''(empty for not login)
+            var user_allow_fbaction = true; //default is true, also publish fb action
+            if (sessionStorage.getItem("vote_user_allow_fbaction") !== null) {
+                user_allow_fbaction = sessionStorage.getItem("vote_user_allow_fbaction");
+            }
+        </script>
+        <!--    Browser -->
+        <script> var Browser = {isIE: false};</script>
+        <!-- By default we will assume that the browser is not IE -->
+        <!--[if IE 5]>
+        <script>Browser = {isIE: true, version: 5};</script><![endif]-->
+        <!--[if IE 6]>
+        <script>Browser = {isIE: true, version: 6};</script><![endif]-->
+        <!--[if IE 7]>
+        <script>Browser = {isIE: true, version: 7};</script><![endif]-->
+        <!--[if IE 8]>
+        <script>Browser = {isIE: true, version: 8};</script><![endif]-->
+        <!--[if IE 9]>
+        <script>Browser = {isIE: true, version: 9};</script><![endif]-->
+
+        <!-- Add js libs -->
+        <?php
+    $js_files = $this->_module->loadConfig("js");
+                                 $js_cache = ROOT_PATH . '/' . ltrim($js_files[0]['cache'], "/");
+                                 foreach ($js_files as $js)
+                                 {
+                                 if (file_exists($js_cache))
+                                 {
+                                 html_add_js($js['cache']);
+                                 nl();
+                                 }
+                                 else
+                                 {
+                                 foreach ($js['src'] as $src)
+                                 {
+                                 html_add_js($src);
+                                 nl();
+                                 }
+                                 }
+                                 }
+
+                                 echo $this->render("layout/canvas/js_variables");
+                                 ?>
+                                 <!--[if IE 9]>
+                                 <?php
+    html_add_js("js/bower_components/jquery-placeholder/jquery.placeholder.js");
+    nl();
+    ?>
+                                 <style>
+                                     input, textarea {
+                                         color: #000;
+                                     }
+
+                                     .placeholder {
+                                         color: #aaa;
+                                     }
+                                 </style>
+                                 <![endif]-->
+        <script>
+            if (Browser.isIE) {
+                if (Browser.version == 9) {
+                    $(document).ready(function () {
+                        $('input, textarea').placeholder();
+                    });
+                }
+            }
+        </script>
+
+        <?php
+    if (__c('app_iframe_resizer_activated'))
+    {
+        ?>
+        <script src="//<?php echo url_with_domain(
+            'js/bower_components/iframe-resizer/js/iframeResizer.contentWindow.min.js'
+        ) ?>"></script>
+        <?php
+    }
+    ?>
+
+        <?php __pc('app_head_libs'); ?>
+    {% endblock %}
+</head>

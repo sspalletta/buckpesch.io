@@ -1,0 +1,76 @@
+version: '2'
+
+services:
+
+  # Application container
+  web:
+    image: web-custom
+    build:
+      context: .
+      dockerfile: ./build/docker/Dockerfile
+    container_name: container-web
+    env_file: ./build/docker/env
+    #command: yarn build:watch
+    ports:
+      - "80:80"
+      - "443:443"
+    expose:
+      - "9000"
+    volumes:
+      - .:/var/www/html:rw
+      - ./build/docker/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      # Copy Apache vhost and ssl certs
+      - ./build/docker/apache/vhost.conf:/etc/apache2/sites-available/000-default.conf:rw
+    depends_on:
+      - mysql
+
+  # Database container incl. init script for local development
+  mysql:
+    image: mysql:5.7.18
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./build/mysql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: root
+    #command: mysqld --sql-mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+
+  # Redis container for local caching
+  #redis:
+  #  image: redis:3
+  #  ports:
+  #   - "6379:6379"
+
+  # Redis container for local caching
+  #elasticsearch:
+  #  build: build/docker/elasticsearch/
+  #  volumes:
+  #    - ./build/docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+  #  ports:
+  #    - "9200:9200"
+  #    - "9300:9300"
+  #  environment:
+  #    ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    #networks:
+    #  - elk
+
+  #kibana:
+  #  build: build/docker/kibana/
+  #  volumes:
+  #    - ./build/docker/kibana/config/:/usr/share/kibana/config
+  #  ports:
+      - "5601:5601"
+  #  networks:
+  #    - elk
+  #  depends_on:
+  #    - elasticsearch
+
+volumes:
+  mysql-data:
+
+#secrets:
+#  psql-pw:
+#    external: true

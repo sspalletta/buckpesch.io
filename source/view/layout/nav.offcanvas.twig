@@ -1,0 +1,319 @@
+<?php
+$can_upload     = $this->can_upload;
+$smart_link_url = $this->smart_link_url;
+$cur_locale     = $this->cur_locale;
+$locales        = $this->locales;
+$i_id           = getGlobal('i_id');
+
+// Prepare User data
+$user      = false;
+$user_name = "";
+$avatar    = "";
+if (islogin()) {
+    $uid  = session_user_get("uid");
+    $user = $this->_module->getModel('user', array($uid));
+
+    if ($user->getFirstName()) {
+        $user_name = $user->getFirstName();
+    } else {
+        $user_name = $user->getEmail();
+    }
+
+    // Get avatar
+    $avatar = '<img class="avatar img-rounded" style="max-height:48px; margin-right: 10px;" src="' .
+              $user->getPicture() . '"
+    alt="' .
+              $user_name . '"
+    />';
+}
+?>
+
+<!-- The menu -->
+<style>
+    .mobile-menu {
+        display: none;
+    }
+</style>
+<nav id="menu" class="mobile-menu">
+    <div>
+        <div class="logo-container">
+            <a class="navmenu-brand" href='<?= url_link("overview"); ?>' target="_top">
+                <img src="<?php __pc('app_logo'); ?>">
+            <span class="company-name" style="display: none;">
+                <?php echo __c('app_company_name'); ?>
+            </span>
+            </a>
+        </div>
+
+        <ul>
+            <?php
+            if (islogin() && in_array("user_profile", __c("app_pages_activated"))) {
+                ?>
+                <li class="profile">
+                    <a href="<?= url_link('users/' . session_user_get("uid")); ?>">
+                        <?php echo $avatar . " " . $user_name; ?>
+                    </a>
+                </li>
+                <?php
+            }
+            ?>
+
+            <li class="nav-overview">
+                <a href="<?= url_link('overview'); ?>">
+                    <i class="fa fa-home"></i> <?php __pt('home'); ?>
+                </a>
+            </li>
+            <?php
+            if ($can_upload):
+                $auth_methods = __c('mod_auth_methods');
+                if (islogin($i_id) == false && count($auth_methods) == 1 && in_array("facebook", $auth_methods)) {
+                    ?>
+                    <li class="nav-upload">
+                        <a href="javascript:void();" onclick="fb_login_target({
+                        route: 'upload'
+                    });">
+                            <?php __pt('upload_item'); ?>
+                        </a>
+                    </li>
+                    <?php
+                } else {
+                    ?>
+                    <li class="nav-upload">
+                        <a href="<?= url_link('upload'); ?>">
+                            <?php __pt('upload_item'); ?>
+                        </a>
+                    </li>
+                    <?php
+                }
+                ?>
+                <?php
+            endif;
+
+            // Generate Navigation in a certain order
+            $nav_order       = array_map('trim', explode(',', __c('app_nav_main_order')));
+            $navigation      = [];
+            $navigation_post = [];
+
+            // Rules
+            if (in_array('rules', __c('mod_static_pages_activated'))):
+                $position = array_search('rules', $nav_order);
+                $link     = url_link('rules');
+                $caption  = __t('rules');
+                $html     = '<li class="nav-rules"><a href="' . $link . '">' . $caption . '</a></li>';
+                if ($position !== false) {
+                    $navigation[$position] = $html;
+                } else {
+                    $navigation_post[] = $html;
+                }
+            endif;
+
+            // Terms
+            if (in_array('terms', __c('mod_static_pages_activated'))):
+                $position = array_search('terms', $nav_order);
+                $link     = url_link('terms');
+                $caption  = __t('terms');
+                $html     = '<li class="nav-terms"><a href="' . $link . '">' . $caption . '</a></li>';
+                if ($position !== false) {
+                    $navigation[$position] = $html;
+                } else {
+                    $navigation_post[] = $html;
+                }
+            endif;
+
+            // Privacy
+            if (in_array('privacy', __c('mod_static_pages_activated'))):
+                $position = array_search('privacy', $nav_order);
+                $link     = url_link('privacy');
+                $caption  = __t('privacy');
+                $html     = '<li class="nav-privacy"><a href="' . $link . '">' . $caption . '</a></li>';
+                if ($position !== false) {
+                    $navigation[$position] = $html;
+                } else {
+                    $navigation_post[] = $html;
+                }
+            endif;
+
+            // Imprint
+            if (in_array('imprint', __c('mod_static_pages_activated'))):
+                $position = array_search('imprint', $nav_order);
+                $link     = url_link('imprint');
+                $caption  = __t('imprint');
+                $html     = '<li class="nav-imprint"><a href="' . $link . '">' . $caption . '</a></li>';
+                if ($position !== false) {
+                    $navigation[$position] = $html;
+                } else {
+                    $navigation_post[] = $html;
+                }
+            endif;
+
+            // Custom pages
+            for ($i = 1; $i <= 3; $i++) {
+                $target = "";
+                if (in_array('custom' . $i, __c('mod_static_pages_activated'))) {
+                    if (trim(__c("mod_static_custom" . $i . "_url")) != "") {
+                        // Use external page
+                        $link = __c("mod_static_custom" . $i . "_url");
+                        if (__c("mod_static_custom" . $i . "_target_blank")) {
+                            $target = "target=\"_blank\"";
+                        }
+                    } else {
+                        // Use internal link
+                        $link = url_link("custom" . $i);
+                    }
+
+                    $position = array_search('custom' . $i, $nav_order);
+                    $caption  = __c("mod_static_custom" . $i . "_caption");
+                    $html     = '<li class="nav-custom' . $i . '"><a href="' . $link . '" ' . $target . '>' . $caption . '</a></li>';
+                    if ($position !== false) {
+                        $navigation[$position] = $html;
+                    } else {
+                        $navigation_post[] = $html;
+                    }
+                }
+            }
+
+            // Print navigation
+            ksort($navigation);
+            foreach ($navigation as $item) {
+                echo $item;
+            }
+            foreach ($navigation_post as $item) {
+                echo $item;
+            }
+
+
+            if (islogin()): ?>
+                <li class="logout">
+                    <a href="<?= url_link("logout"); ?>">
+                        <?php __p("logout"); ?>
+                    </a>
+                </li>
+            <?php else: ?>
+                <li class="login">
+                    <?php
+                    $auth_methods = __c('mod_auth_methods');
+                    if (count($auth_methods) == 1 && in_array("facebook", $auth_methods)): ?>
+                        <a href="<?= url_link("auth.login.ui"); ?>"
+                           onclick="fb_login_target({route: 'overview'});return false;">
+                            <?php __pt("login"); ?>
+                        </a>
+                    <?php else: ?>
+                        <a href="<?= url_link("auth.login.ui"); ?>">
+                            <?php __pt("login"); ?>
+                        </a>
+                    <?php endif; ?>
+                </li>
+            <?php endif;
+
+            if (is_admin()): ?>
+                <li id="cd-handle">
+                    <a id="admin__offcanvas__btn2" href="javascript:void(false);">
+                        <i class="fa fa-cogs"></i> <?php echo __t('admin_options'); ?>
+                    </a>
+                </li>
+            <?php endif;
+
+            /* Language switch */
+            $base_url = str_replace("lang", "cur_lang", $smart_link_url);
+            if (is_array($locales) && count($locales) > 1) {
+                ?>
+                <li id="admin_locale_switch">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="flag-sprite flag-<?= $cur_locale; ?>"></span> <?php __pt($cur_locale); ?>
+                    </a>
+                    <ul role="menu">
+                        <?php foreach ($locales as $locale) {
+                            ?>
+                            <li>
+                                <a href="<?php echo $base_url; ?>&amp;lang=<?php echo $locale; ?>" target="_top">
+                                    <span class="flag-sprite flag-<?= $locale; ?>"></span> <?php __pt($locale); ?>
+                                </a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </li>
+            <?php } ?>
+
+        </ul>
+    </div>
+</nav>
+
+<?php
+// Prepare the social network links
+$social_networks = array();
+if (in_array("fb", __c('mod_fangate_social_networks'))) {
+    $social_networks[] = array(
+        "caption" => __t('facebook'),
+        "url" => $this->global->instance['fb_page_url']
+    );
+}
+if (in_array("twitter", __c('mod_fangate_social_networks'))) {
+    $social_networks[] = array(
+        "caption" => __t('twitter'),
+        "url" => "https://twitter.com/" . __c('app_twitter_id')
+    );
+}
+if (in_array("gplus", __c('mod_fangate_social_networks'))) {
+    $social_networks[] = array(
+        "caption" => __t('gplus'),
+        "url" => "https://plus.google.com/" . __c('app_gplus_id')
+    );
+}
+?>
+
+<style type="text/css">
+    .mm-menu {
+        background: <?=__c('app_color_primary');?> !important;
+    }
+
+    .mm-subopened .mm-subblocker {
+        opacity: 1;
+    }
+
+    .mm-subopened .mm-subblocker:before {
+        content: "x";
+        color: #999;
+        display: inline-block;
+        padding: 5px 15px;
+    }
+
+    .mm-subopened .mm-subblocker:hover:before {
+        color: #ccc;
+    }
+</style>
+<!-- Fire the plugin onDocumentReady -->
+<script type="text/javascript">
+    var social_networks = <?=json_encode($social_networks);?>;
+    var navbars = [];
+    if (social_networks.length > 0) {
+        var links = [];
+
+        _.each(social_networks, function (social_network) {
+            links.push('<a href="' + social_network['url'] + '" target="_blank">' + social_network['caption'] + '</a>');
+        });
+
+        navbars = [{
+            position: "bottom",
+            height  : 2,
+            content : links
+        }];
+    }
+    jQuery(document).ready(function ($) {
+        var menu = $("#menu");
+        menu.mmenu({
+            "extensions": [
+                "effect-slide-menu",
+                "theme-dark"
+            ],
+            iconPanels  : {
+                add        : true,
+                visible    : 1,
+                hideNavbars: true
+            },
+            navbars     : navbars,
+            offCanvas   : {
+                position: "right"
+            }
+        });
+    });
+</script>

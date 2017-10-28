@@ -1,0 +1,128 @@
+<?php
+require_once ROOT_PATH . '/../../source/config/css-config.php';
+$am     = getGlobal("app_manager");
+$device = $am->getDeviceType();
+
+// Compile the CSS sources
+$css_helper = $am->getCssHelper();
+$compiled_files = array();
+foreach ($css_config as $file_id => $css_file) {
+    $css_helper->setFileId($file_id);
+    // Reset settings
+    $css_helper->setConfigValues(array());
+    $css_helper->setFiles(array());
+    $css_helper->setVariables(array());
+    $css_helper->setReplacements(array());
+
+    if (isset($css_file['config_values'])) {
+        $css_helper->setConfigValues($css_file['config_values']);
+    }
+    if (isset($css_file['files'])) {
+        $css_helper->setFiles($css_file['files']);
+    }
+    if (isset($css_file['variables'])) {
+        $css_helper->setVariables($css_file['variables']);
+    }
+    if (isset($css_file['replacements'])) {
+        $css_helper->setReplacements($css_file['replacements']);
+    }
+
+    $compiled_files[] = $css_helper->getFilePath();
+}
+
+// Output of the compiled CSS files to the HTML head
+foreach ($compiled_files as $file) {
+    $url = rtrim(config_get('url_basepath'), "/") . $file;
+    ?>
+    <link type="text/css" rel="stylesheet" href="<?php echo $url ?>" />
+<?php
+}
+
+// Add font
+$app_font_body     = getGoogleFont(__c('app_font_body'));
+$app_font_headings = getGoogleFont(__c('app_font_headings'));
+if ($app_font_body['href']) {
+    ?>
+    <link href="<?= $app_font_body['href'] ?>" rel="stylesheet" type="text/css">
+    <?php
+}
+if ($app_font_headings['href'] && $app_font_headings['href'] !== $app_font_body['href']) {
+    ?>
+    <link href="<?= $app_font_headings['href'] ?>" rel="stylesheet" type="text/css">
+    <?php
+}
+
+// Add background
+$background = array();
+// Add a pattern and image to the background
+if (__c('app_background_pattern') != "none") {
+    $protocol = "https://";
+    if (!is_https()) {
+        $protocol = "http://";
+    }
+    $pattern               = array();
+    $pattern['url']        = "url(" . $protocol . url_with_domain('images/patterns/' . __c('app_background_pattern') . '.png') . ")";
+    $pattern['repeat']     = "repeat";
+    $pattern['size']       = "auto";
+    $pattern['position']   = "top center";
+    $pattern['attachment'] = "fixed";
+    $background[]          = $pattern;
+}
+if (__c('app_background_image_activated')) {
+    $image               = array();
+    $image['url']        = "url(" . __c('app_background_image_source') . ")";
+    $image['repeat']     = "no-repeat";
+    $image['size']       = "cover";
+    $image['position']   = "center top";
+    $image['attachment'] = "fixed";
+    $background[]        = $image;
+}
+switch (count($background)) {
+    case 0:
+        $background = false;
+        break;
+    case 1:
+        $background = $background[0];
+        break;
+    default:
+        $aggregated = array(
+            "url" => "",
+            "repeat" => "",
+            "size" => "",
+            "position" => "",
+            "attachment" => ""
+        );
+        foreach ($background as $value) {
+            $aggregated["url"] .= $value['url'] . ", ";
+            $aggregated["repeat"] .= $value['repeat'] . ", ";
+            $aggregated["size"] .= $value['size'] . ", ";
+            $aggregated["position"] .= $value['position'] . ", ";
+            $aggregated["attachment"] .= $value['attachment'] . ", ";
+        }
+        $background = $aggregated;
+}
+?>
+<style>
+    body {
+        font-family: <?=$app_font_body['family'];?>;
+        background-color: <?=__c('app_color_highlight');?>;
+    }
+
+    h1, h2, h3, h4 {
+        font-family: <?=$app_font_headings['family'];?>;
+    }
+
+    <?php
+    if ($background) {
+    ?>
+    body {
+        background-image: <?php echo rtrim($background['url'], ', '); ?>;
+        background-repeat: <?php echo rtrim($background['repeat'], ', '); ?>;
+        background-size: <?php echo rtrim($background['size'], ', '); ?>;
+        background-position: <?php echo rtrim($background['position'], ', '); ?>;
+        background-attachment: <?php echo rtrim($background['attachment'], ', '); ?>;
+    }
+    <?php
+    }
+    ?>
+</style>

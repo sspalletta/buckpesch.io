@@ -1,0 +1,188 @@
+{#{% extends "layout/layout.twig" %}#}
+
+{% block body %}
+
+    <div id="map" style="min-height: 400px;width: 100%;"></div>
+
+    <script>
+        var clusterColor       = '<?=__c( 'app_color_secondary' );?>';
+        clusterColor = clusterColor.replace('#','');
+        var mode = '<?=__c('items_geo_mode');?>';
+        var map_markers = <?=json_encode($map_markers);?>;
+        /**
+         * Javascript for managing the Geolocation upload form element
+         */
+        function initMap() {
+
+            //create empty LatLngBounds object
+            var bounds = new google.maps.LatLngBounds();
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom             : 5,
+                center           : {lat: 51.165691, lng: 10.451526000000058},
+                scrollwheel      : false,
+                streetViewControl: false,
+                navigationControl: false,
+                mapTypeControl   : false,
+                scaleControl     : false,
+                //draggable        : false,
+            });
+
+            setMarkers(map, bounds);
+
+            // now fit the map to the newly inclusive bounds
+            map.fitBounds(bounds);
+            //map.setZoom(map.getZoom() - 3);
+        }
+
+        // Data for the markers consisting of a name, a LatLng and a zIndex for the
+        // order in which these markers should display on top of each other.
+        var items = [
+            {% for key, item in items %}
+            {
+                'key'      : {{ key }},
+                'latitude' :{{ item.latitude }},
+                'longitude':{{ item.longitude }},
+                'picture'  : '{{ item.picture }}',
+                'title'    : '{{ item.title }}',
+                'url'      : '/items/{{ item.id }}',
+            },
+            {% endfor %}
+        ];
+        if(typeof mode !== "undefined" && mode !== "predefined"){
+            function setMarkers(map, bounds) {
+                // Adds markers to the map.
+
+                // Marker sizes are expressed as a Size of X,Y where the origin of the image
+                // (0,0) is located in the top left of the image.
+
+                // Origins, anchor positions and coordinates of the marker increase in the X
+                // direction to the right and in the Y direction down.
+                var image = {
+                    url       : 'https://www.gstatic.com/images/branding/product/1x/maps_64dp.png',
+                    // This marker is 20 pixels wide by 32 pixels high.
+                    //size: new google.maps.Size(20, 32),
+                    scaledSize: new google.maps.Size(50, 50), // scaled size
+                    // The origin for this image is (0, 0).
+                    origin    : new google.maps.Point(0, 0),
+                    // The anchor for this image is the base of the flagpole at (0, 32).
+                    anchor    : new google.maps.Point(0, 32)
+                };
+                // Shapes define the clickable region of the icon. The type defines an HTML
+                // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+                // The final coordinate closes the poly by connecting to the first coordinate.
+                var shape = {
+                    coords: [1, 1, 1, 20, 18, 20, 18, 1],
+                    type  : 'poly'
+                };
+                for (var i = 0; i < items.length; i++) {
+                    var item  = items[i];
+                    image.url = item.picture;
+
+                    var marker           = new google.maps.Marker({
+                        position: {lat: item.latitude, lng: item.longitude},
+                        map     : map,
+                        icon    : image,
+                        shape   : shape,
+                        title   : item.title,
+                        zIndex  : item.key
+                    });
+                    var infowindow       = new google.maps.InfoWindow({});
+                    // Prepare the info window
+                    marker.contentString = '<div id="content">' +
+                        '<div id="siteNotice">' +
+                        '</div>' +
+                        '<h1 id="firstHeading" class="firstHeading">' + item.title + '</h1>' +
+                        '<div id="bodyContent">' +
+                        '<p>' +
+                        '<a href="' + item.url + '">' +
+                        '{{ translations.vote }}' +
+                        '</a> ' +
+                        '</div>' +
+                        '</div>';
+
+                    marker.addListener('click', function () {
+                        infowindow.setContent(this.contentString);
+                        infowindow.open(map, this);
+                        //map.setCenter(this.getPosition());
+                    });
+
+                    //extend the bounds to include each marker's position
+                    bounds.extend(marker.position);
+                }
+            };
+        }
+
+        if(typeof mode !== "undefined" && mode == "predefined") {
+            function setMarkers(map, bounds) {
+                var infowindow = new google.maps.InfoWindow();
+                var image = null;
+                function placeMarker( loc ) {
+                    var latLng = new google.maps.LatLng( loc.latitude, loc.longitude);
+                    var marker = new google.maps.Marker({
+                        position : latLng,
+                        map : map,
+                        icon :image,
+                        title : loc.title,
+                    });
+                    markers.push(marker);
+
+                    if(loc.info_window !== null){
+                        google.maps.event.addListener(marker, 'click', function(){
+                            infowindow.close(); // Close previously opened infowindow
+                            infowindow.setContent( "<div id='infowindow'>"+ loc.info_window +"</div>");
+                            infowindow.open(map, marker);
+                        });
+                    }
+                }
+                for(var i=0; i<map_markers.length; i++) {
+                    if(map_markers[i].marker_icon !== null){
+                        var image = {
+                            url: map_markers[i].marker_icon,
+                            // This marker is 20 pixels wide by 32 pixels high.
+                            size: new google.maps.Size(24, 32),
+                            // The origin for this image is (0, 0).
+                            origin: new google.maps.Point(0, 0),
+                            //The anchor for this image is the base of the flagpole at (0, 32).
+                            anchor: new google.maps.Point(12, 16)
+                        };
+                    }
+                    placeMarker( map_markers[i] );
+                }
+                mcOptions = {
+                    styles: [{
+                        height: 53,
+                        url: "https://contest.imgix.net/live/3.4/images/m01.png?bri=50&mono="+clusterColor,
+                        width: 53
+                        },
+                        {
+                        height: 56,
+                        url: "https://contest.imgix.net/live/3.4/images/m02.png?bri=25&mono="+clusterColor,
+                        width: 56
+                        },
+                        {
+                        height: 66,
+                        url: "https://contest.imgix.net/live/3.4/images/m03.png?bri=0&mono="+clusterColor,
+                        width: 66
+                        },
+                        {
+                        height: 78,
+                        url: "https://contest.imgix.net/live/3.4/images/m04.png?bri=-25&mono="+clusterColor,
+                        width: 78
+                        },
+                        {
+                        height: 90,
+                        url: "https://contest.imgix.net/live/3.4/images/m05.png?bri=-50&mono="+clusterColor,
+                        width: 90
+                    }],
+                    minimumClusterSize: 7
+                }    
+                var markerCluster = new MarkerClusterer(map, markers, mcOptions);
+                bounds.extend(markers.position);
+            };
+        }
+    </script>
+    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyAKk1cNIucyPq-MpwczsDyNOPUaiSgiU6g&libraries=places&callback=initMap"
+            async defer></script>    
+    <script src="https://s3.app-arena.com/apps/marker/markerclusterer.js">
+
+{% endblock %}

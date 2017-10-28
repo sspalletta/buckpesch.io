@@ -1,0 +1,17 @@
+# Ignore files when working on dev. Files are mounted then
+.babel-cache/
+.sass-cache/
+.git/
+.github/
+build/
+data/
+dist/
+node_modules/
+vendor/
+bower_components/
+
+# Theme files
+web/wp/
+web/app/uploads/
+plugins/
+mu-plugins/

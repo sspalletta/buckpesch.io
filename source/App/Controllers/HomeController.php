@@ -12,7 +12,6 @@ class HomeController extends AbstractController {
         return $this->view->render($this->response, 'home.html.twig', [
         	'name' => 'Sebastian Buckpesch',
         	'title' => 'Sebastian Buckpesch - CTO and professional cloud developer',
-
         ]);
 	}
 }

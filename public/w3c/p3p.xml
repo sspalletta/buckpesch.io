@@ -1,0 +1,8 @@
+<META>
+    <POLICY-REFERENCES>
+        <POLICY-REF about="/w3c/contest-app.p3p#App">
+            <INCLUDE>/</INCLUDE>
+            <COOKIE-INCLUDE/>
+        </POLICY-REF>
+    </POLICY-REFERENCES>
+</META>

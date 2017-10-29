@@ -45,17 +45,6 @@ abstract class AbstractController {
         $this->response  = $response;
         $this->container = $container;
         $this->view      = $container['view'];
-
-        // Check if redis configuration is available
-        $redisConfig = $container->get('redis');
-        if (isset($redisConfig, $redisConfig['host'])) {
-            $defaultLifetime = 3600;
-            $port            = isset($redisConfig['port']) ? $redisConfig['port'] : 6379;
-            $redisConnection = RedisAdapter::createConnection('redis://' . $redisConfig['host'] . ':' . $port);
-            $adapter         = new RedisAdapter($redisConnection, 'aa_contest', $defaultLifetime);
-            // Convert Cache adapter to Tag aware adapter
-            $this->adapter = new TagAwareAdapter($adapter);
-        }
     }
 
 }

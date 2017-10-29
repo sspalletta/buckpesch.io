@@ -1,0 +1,23 @@
+{
+  "name": "buckpesch.io",
+  "description": "My personal website presenting my interests and skills",
+  "version": "1.0.0",
+  "dependencies": {
+    "bootstrap": "^4.0.0-beta.2",
+    "font-awesome": "^4.7.0"
+  },
+  "devDependencies": {
+    "node-sass": "^3.8.0",
+    "node-sass-importer": "^1.0.0"
+  },
+  "scripts": {
+    "init": "composer install && yarn"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://sbuckpesch@github.com/sbuckpesch/buckpesch.io"
+  },
+  "author": "Sebastian Buckpesch <s.buckpesch@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://buckpesch.io"
+}

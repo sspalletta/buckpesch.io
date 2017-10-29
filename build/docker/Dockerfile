@@ -1,22 +1,9 @@
-#############################
-# Wordpress Development
-#
-# Docker file to be used with Docker Compose. This will setup a complete development environment
-#
-#############################
-
 FROM php:7.1-apache
 
-MAINTAINER App-Arena GmbH <friends@app-arena.com>
+MAINTAINER Sebastian Buckpesch <s.buckpesch@gmail.com>
 
 # Set the locale
 RUN apt-get clean && apt-get -y update && apt-get install -y locales && locale-gen en_US.UTF-8
-
-# Set environment variables
-ENV COMPOSER_ALLOW_SUPERUSER=1
-#ENV LANG en_US.UTF-8
-#ENV LANGUAGE en_US:en
-#ENV LC_ALL en_US.UTF-8
 
 # Install Ubuntu packages
 RUN apt-get install -y \
@@ -73,12 +60,7 @@ RUN curl -fsSL 'https://xdebug.org/files/xdebug-2.5.5.tgz' -o xdebug.tar.gz \
         ) \
         && rm -r xdebug \
         && docker-php-ext-enable xdebug
-#COPY ./build/docker/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 RUN su -c "gem install sass"
-
-# install phpredis extension
-#RUN pecl install redis-3.1.3 \
-#    && docker-php-ext-enable redis
 
 # Apache configuration
 RUN a2enmod rewrite ssl
@@ -86,12 +68,3 @@ RUN service apache2 restart
 
 # Change uid and gid of apache to docker user uid/gid
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
-
-# Install package dependencies
-WORKDIR /var/www/html
-COPY composer.json ./
-RUN composer install
-
-WORKDIR /var/www/html/web/app/themes/app-arena-sage9-beta
-COPY ./web/app/themes/app-arena-sage9-beta/composer.json ./web/app/themes/app-arena-sage9-beta/package.json ./
-RUN composer install && yarn

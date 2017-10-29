@@ -23,7 +23,7 @@ class HomeController extends AbstractController {
 			'image'       => 'https://s3.buckpesch.io/images/sebastian-buckpesch-grey.jpg',
 			'nationality' => 'Germany',
 			'phone'       => '+49 (176) 80092736',
-			'resume'      => 'https://s3.buckpesch.io/downloads/sebastian-buckpesch-resume'
+			'resume'      => 'https://s3.buckpesch.io/downloads/Sebastian-Buckpesch-CV.pdf'
 		];
 
 		return $this->view->render( $this->response, 'home.html.twig', $data );

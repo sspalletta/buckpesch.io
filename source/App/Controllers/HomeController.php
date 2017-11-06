@@ -74,7 +74,7 @@ class HomeController extends AbstractController {
 				[
 					'icon'        => 'icon-key',
 					'title'       => 'APIs',
-					'description' => 'HTTP, RESTful, GraphQL, SOAP, OAuth2, JWT'
+					'description' => 'HTTP/2, RESTful, GraphQL, SOAP, OAuth2, JWT'
 				],
 				[
 					'icon'        => 'icon-circle-compass',

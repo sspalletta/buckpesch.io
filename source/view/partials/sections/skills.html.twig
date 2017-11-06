@@ -1,82 +1,31 @@
 <!-- skills section -->
 <section id="skills" class="xs-onepage-section">
     <div class="container">
-        <div class="row">
+        <div class="row mt-5">
             <!-- section title -->
             <div class="col-md-12 text-center">
                 <span class="title-number">02</span>
-                <h3 class="section-title no-padding">Skills</h3>
+                <h3 class="section-title no-padding">{{ skills.title }}</h3>
             </div>
             <!-- end section title -->
         </div>
         <div class="row margin-ten no-margin-bottom">
             <!-- features grid -->
-            <div class="col-md-4 col-sm-12">
+            {% for skill in skills.items %}
                 <!-- features item -->
-                <div class="features-section col-md-12 col-sm-6 no-padding">
-                    <div class="col-md-3 col-sm-2 col-xs-2 no-padding"><i class="icon-desktop medium-icon "></i></div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 no-padding text-left f-right">
-                        <h5 class="margin-five no-margin-top">Backend</h5>
-                        <p class="width-90">PHP / ZF2, Slim3, NodeJS / Walmart Electrode</p>
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="row mb-5">
+                        <div class="col-2 col-sm-3">
+                            <i class="{{ skill.icon }} medium-icon "></i>
+                        </div>
+                        <div class="col-10 col-sm-9 text-left">
+                            <h5 class="margin-five no-margin-top">{{ skill.title }}</h5>
+                            <p class="width-90">{{ skill.description }}</p>
+                        </div>
                     </div>
                 </div>
                 <!-- end features item -->
-                <!-- features item -->
-                <div class="features-section col-md-12 col-sm-6 no-padding no-margin">
-                    <div class="col-md-3 col-sm-2 col-xs-2 no-padding"><i class="icon-target medium-icon"></i></div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 no-padding text-left f-right">
-                        <h5 class="margin-five no-margin-top">Cloud</h5>
-                        <p class="width-90">
-                            Certified AWS Solution Architect Associate, EC2, RDS, VPC, Lambda, ECS,
-                            Elasticsearch, DynamoDB, Cloudformation, Serverless Framework
-                        </p>
-                    </div>
-                </div>
-                <!-- end features item -->
-            </div>
-            <div class="col-md-4 col-sm-12">
-                <!-- features item -->
-                <div class="features-section col-md-12 col-sm-6 no-padding">
-                    <div class="col-md-3 col-sm-2 col-xs-2 no-padding"><i class="icon-trophy medium-icon"></i></div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 no-padding text-left f-right">
-                        <h5 class="margin-five no-margin-top">Frontend</h5>
-                        <p class="width-90">React, Bootstrap4, SCSS</p>
-                    </div>
-                </div>
-                <!-- end features item -->
-                <!-- features item -->
-                <div class="features-section col-md-12 col-sm-6 no-padding no-margin">
-                    <div class="col-md-3 col-sm-2 col-xs-2 no-padding"><i class="icon-scissors medium-icon"></i></div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 no-padding text-left f-right">
-                        <h5 class="margin-five no-margin-top">DevOps</h5>
-                        <p class="width-90">
-                            Docker, Webpack, Bamboo, Ubuntu
-                        </p>
-                    </div>
-                </div>
-                <!-- end features item -->
-            </div>
-            <div class="col-md-4 col-sm-12">
-                <!-- features item -->
-                <div class="features-section col-md-12 col-sm-6 no-padding">
-                    <div class="col-md-3 col-sm-2 col-xs-2 no-padding"><i class="icon-hotairballoon medium-icon"></i>
-                    </div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 no-padding text-left f-right">
-                        <h5 class="margin-five no-margin-top">Architecture</h5>
-                        <p class="width-90">SOA, Micro-Service-Architecture, MVC</p>
-                    </div>
-                </div>
-                <!-- end features item -->
-                <!-- features item -->
-                <div class="features-section col-md-12 col-sm-6 no-padding no-margin">
-                    <div class="col-md-3 col-sm-2 col-xs-2 no-padding"><i class="icon-tools medium-icon"></i></div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 no-padding text-left f-right">
-                        <h5 class="margin-five no-margin-top">Scrum</h5>
-                        <p class="width-90">Product owner</p>
-                    </div>
-                </div>
-                <!-- end features item -->
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>

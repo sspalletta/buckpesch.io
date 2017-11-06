@@ -1,40 +1,26 @@
 <!-- navigation -->
-<nav class="navbar navbar-default navbar-fixed-top nav-transparent overlay-nav sticky-nav nav-border-bottom no-transition"
+<nav class="navbar navbar-expand-lg navbar-fixed-top nav-transparent overlay-nav sticky-nav nav-border-bottom no-transition"
      role="navigation">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 col-sm-2 col-xs-6">
-                <a class="logo-light" href="/">
-                    <!--<img alt="{{ name }} Logo"
-                         src="images/logo-light.png"
-                         class="logo"/>-->
-                    <strong>Sebastian Buckpesch</strong>
-                </a>
-                <a class="logo-dark" href="/">
-                    <!--<img alt="" src="images/logo-light.png" class="logo"/>-->
-                    <strong>Sebastian Buckpesch</strong>
-                </a>
-            </div>
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span
-                            class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span> <span
-                            class="icon-bar"></span> <span class="icon-bar"></span></button>
-            </div>
-            <div class="col-md-9 col-sm-10 text-right">
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#slider" class="inner-link">Home</a></li>
-                        <li><a href="#features" class="inner-link">About</a></li>
-                        <li><a href="#skills" class="inner-link">Skills</a></li>
-                        <li><a href="#education" class="inner-link">Education</a></li>
-                        <li><a href="#portfolio" class="inner-link">Portfolio</a></li>
-                        <li><a href="#blog" class="inner-link">Blog</a></li>
-                        <li><a href="#contact-us" class="inner-link">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <a class="navbar-brand logo-light" href="/">
+        Sebastian Buckpesch
+    </a>
+    <a class="navbar-brand logo-dark" href="/">
+        Sebastian Buckpesch
+    </a>
+
+    <button type="button" class="navbar-toggler ml-auto" data-toggle="collapse" data-target="#mainNav">
+        <i class="icon-layers"></i>
+    </button>
+    <div id="mainNav" class="navbar-collapse collapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a href="#slider" class="nav-link inner-link">Home</a></li>
+            <li class="nav-item"><a href="#features" class="nav-link inner-link">About</a></li>
+            <li class="nav-item"><a href="#skills" class="nav-link inner-link">{{ skills.title }}</a></li>
+            <li class="nav-item"><a href="#education" class="nav-link inner-link">{{ education.title }}</a></li>
+            {#<li class="nav-item"><a href="#portfolio" class="nav-link inner-link">Portfolio</a></li>
+            <li class="nav-item"><a href="#blog" class="nav-link inner-link">Blog</a></li>#}
+            {#<li class="nav-item"><a href="#contact-us" class="nav-link inner-link">Contact</a></li>#}
+        </ul>
     </div>
 </nav>
 <!-- end of navigation -->

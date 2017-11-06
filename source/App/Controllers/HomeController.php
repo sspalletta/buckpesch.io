@@ -72,6 +72,11 @@ class HomeController extends AbstractController {
 					'description' => 'CI/CD, Docker, Webpack, Bamboo, Ubuntu'
 				],
 				[
+					'icon'        => 'icon-key',
+					'title'       => 'APIs',
+					'description' => 'HTTP, RESTful, GraphQL, SOAP, OAuth2, JWT'
+				],
+				[
 					'icon'        => 'icon-circle-compass',
 					'title'       => 'Architecture',
 					'description' => 'MVC, SOA, Serverless Architecture, Micro-Service-Architecture'

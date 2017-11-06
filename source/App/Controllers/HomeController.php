@@ -69,7 +69,7 @@ class HomeController extends AbstractController {
 				[
 					'icon'        => 'icon-tools-2',
 					'title'       => 'DevOps',
-					'description' => 'CI/CD, Docker, Webpack, Bamboo, Ubuntu'
+					'description' => 'CI/CD, Docker, Webpack, Bamboo, Ubuntu, Apache, SSL'
 				],
 				[
 					'icon'        => 'icon-key',

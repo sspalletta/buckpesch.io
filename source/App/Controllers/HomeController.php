@@ -98,7 +98,7 @@ class HomeController extends AbstractController {
 				[
 					'icon'        => 'icon-lightbulb',
 					'title'       => 'Pitch & Innovation',
-					'description' => 'Pitchdeck creation, SaaS Business models, Innovation'
+					'description' => 'Pitchdecks, SaaS Business models, Business opportunity creation'
 				],
 				[
 					'icon'        => 'icon-calendar',

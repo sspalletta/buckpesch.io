@@ -58,8 +58,7 @@ class HomeController extends AbstractController {
 				[
 					'icon'        => 'icon-cloud',
 					'title'       => 'Cloud',
-					'description' => 'Certified AWS Solution Architect Associate, EC2, RDS, VPC, Lambda, ECS,
-                            Elasticsearch, DynamoDB, Cloudformation, Serverless Framework'
+					'description' => 'AWS (EC2, RDS, VPC, Lambda, ECS, DynamoDB, Cloudformation), Elasticsearch, Serverless Framework'
 				],
 				[
 					'icon'        => 'icon-browser',

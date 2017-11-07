@@ -109,7 +109,7 @@ class HomeController extends AbstractController {
 				[
 					'icon'        => 'icon-profile-male',
 					'title'       => 'People management',
-					'description' => 'Micro management, Delegator style'
+					'description' => 'Leadership, Training, Mentoring'
 				],
 			],
 

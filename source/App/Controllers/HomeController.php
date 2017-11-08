@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\Medium;
+
 class HomeController extends AbstractController {
 
 	/**
@@ -23,6 +25,9 @@ class HomeController extends AbstractController {
 			],
 			'copyright'    => date( 'Y' ) . ' Sebastian Buckpesch'
 		];
+
+		// Add blog section
+		$data['blog'] = $this->getBlog();
 
 		// Add about section
 		$data['about'] = [
@@ -112,6 +117,32 @@ class HomeController extends AbstractController {
 				],
 			],
 
+		];
+
+		return $response;
+
+	}
+
+	/**
+	 * Returns a list of blogs and all related information about recent publtications
+	 * @return array Array list of skills
+	 */
+	private function getBlog() {
+
+		$medium     = new Medium( '@sbuckpesch' );
+		$posts      = $medium->getPosts();
+		$postsArray = [];
+		/** @var Medium\Post $post */
+		foreach ( $posts as $post ) {
+			$data                 = $post->toArray();
+			$data['previewImage'] = $post->getPreviewImage( 600 );
+			$data['publishedAt']  = date( 'd F Y', $post->getPublishedAt() / 1000 );
+			$postsArray[]         = $data;
+		}
+
+		$response = [
+			'title' => 'Blog',
+			'items' => $postsArray,
 		];
 
 		return $response;

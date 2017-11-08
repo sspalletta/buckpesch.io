@@ -1712,10 +1712,13 @@ $('.section-link').smoothScroll({
     offset: 1
 });
 
-// Scroll To Down
-function scrollToDown() {
-    var target = $('#features');
-    $('html, body').animate({scrollTop: $(target).offset().top}, 800);
+/**
+ * Smooth scroll to a specified target
+ * @param target jQuery Selector as target
+ */
+function scrollToDown(target) {
+    var target = $(target);
+    $('html, body').animate({scrollTop: $(target).offset().top - 100}, 800);
 }
 
 function scrollToDownSection() {

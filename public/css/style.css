@@ -1554,7 +1554,7 @@ nav .container {
 }
 
 .shrink-nav {
-    background-color: #FFF;
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 .sticky-nav {

@@ -27,10 +27,10 @@ class WordpressPost {
 			'imageCount'  => $data['virtuals']['imageCount'] ?? null,
 			'readingTime' => $data['virtuals']['readingTime'] ?? null,
 		];
-		// Get tags
+		/*// Get tags
 		foreach ( $data['virtuals']['tags'] as $tag ) {
 			$this->tags[] = $tag['name'];
-		}
+		}*/
 		$this->url          = $data['link'];
 		$this->previewImage = $data['_embedded']['wp:featuredmedia'][0]['source_url'];
 	}

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models\Medium;
+namespace App\Models;
 
-class Post {
+class WordpressPost {
 
 	private $title;
 	private $subtitle;
@@ -19,9 +19,9 @@ class Post {
 	 */
 	public function __construct( $data ) {
 		// Parse most important data
-		$this->title       = $data['title'] ?? null;
-		$this->subtitle    = $data['content']['subtitle'] ?? null;
-		$this->publishedAt = $data['latestPublishedAt'] ?? null;
+		$this->title       = $data['title']['rendered'] ?? null;
+		$this->subtitle    = $data['excerpt']['rendered'] ?? null;
+		$this->publishedAt = $data['date'] ?? null;
 		$this->meta        = [
 			'wordCount'   => $data['virtuals']['wordCount'] ?? null,
 			'imageCount'  => $data['virtuals']['imageCount'] ?? null,
@@ -31,8 +31,8 @@ class Post {
 		foreach ( $data['virtuals']['tags'] as $tag ) {
 			$this->tags[] = $tag['name'];
 		}
-		$this->url          = 'https://medium.com/' . $data['user'] . '/' . $data['uniqueSlug'];
-		$this->previewImage = $data['virtuals']['previewImage']['imageId'];
+		$this->url          = $data['link'];
+		$this->previewImage = $data['_embedded']['wp:featuredmedia'][0]['source_url'];
 	}
 
 	/**
@@ -55,32 +55,32 @@ class Post {
 	 * @return mixed|null
 	 */
 	public function getTitle() {
-		return $this->title;
+		return html_entity_decode( $this->title );
 	}
 
 	/**
 	 * @return null
 	 */
 	public function getSubtitle() {
-		return $this->subtitle;
+		return html_entity_decode( $this->subtitle );
 	}
 
 	/**
 	 * @return mixed|null
 	 */
 	public function getPublishedAt() {
-		return $this->publishedAt;
+		$timestamp = $this->publishedAt;
+
+		return strtotime( $timestamp );
 	}
 
 	/**
-	 * @param int $width Required image width
 	 *
 	 * @return string Image url
 	 */
-	public function getPreviewImage( $width = 800 ) {
-		$size = $width . '/';
+	public function getPreviewImage() {
 
-		return 'https://cdn-images-1.medium.com/max/' . $size . $this->previewImage;
+		return $this->previewImage;
 	}
 
 	/**

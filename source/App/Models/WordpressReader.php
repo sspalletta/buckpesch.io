@@ -7,12 +7,11 @@
 
 namespace App\Models;
 
-use App\Models\Medium\Post;
 use GuzzleHttp\Client;
 
-class Medium {
+class WordpressReader {
 
-	private $user;
+	private $userId;
 
 	/** @var array of Medium Posts */
 	private $posts;
@@ -22,23 +21,31 @@ class Medium {
 	 *
 	 * @param string $user Medium username, e.g. @sbuckpesch
 	 */
-	public function __construct( $user ) {
+	public function __construct( $userId ) {
 
-		$this->user = $user;
+		$this->userId = $userId;
 
 		// Fetch data from medium json feed
-		$data = $this->fetch( $user );
+		$data = $this->fetch( $userId );
 
 		// Populate posts
-		$this->setPosts( $data['references']['Post'] ?? [] );
+		$this->setPosts( $data ?? [] );
 
 	}
 
-	private function fetch( $user, $slug = 'latest' ) {
+	private function fetch( $userId ) {
 		$client = new Client();
+		$url    = 'https://www.app-arena.com/wp-json/wp/v2/posts';
+		$params = [
+			'_embed'   => true,
+			'status'   => 'publish',
+			'author'   => $userId,
+			'per_page' => 3,
+		];
+		$url    .= '?' . http_build_query( $params );
 
 		try {
-			$res = $client->request( 'GET', sprintf( 'https://medium.com/%s/%s?format=json', $user, $slug ) );
+			$res = $client->request( 'GET', $url );
 		} catch ( \Exception $exception ) {
 			return false;
 		}
@@ -47,13 +54,9 @@ class Medium {
 			return false;
 		}
 
-		$body = json_decode( str_replace( '])}while(1);</x>', '', $res->getBody() ), true );
+		$body = json_decode( $res->getBody(), true );
 
-		if ( ! isset( $body['success'], $body['payload'] ) ) {
-			return false;
-		}
-
-		return $body['payload'];
+		return $body;
 	}
 
 	/**
@@ -76,8 +79,7 @@ class Medium {
 		$mediumPosts = [];
 
 		foreach ( $posts as $post ) {
-			$post['user']  = $this->user;
-			$mediumPosts[] = new Post( $post );
+			$mediumPosts[] = new WordpressPost( $post );
 		}
 
 		$this->posts = $mediumPosts;

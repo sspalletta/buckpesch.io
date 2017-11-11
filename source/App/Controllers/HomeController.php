@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Medium;
+use App\Models\WordpressReader;
+use Medium\Post;
 
 class HomeController extends AbstractController {
 
@@ -129,16 +131,35 @@ class HomeController extends AbstractController {
 	 */
 	private function getBlog() {
 
-		$medium     = new Medium( '@sbuckpesch' );
+		$medium     = new \Sbuckpesch\Medium\Reader( '@sbuckpesch' );
 		$posts      = $medium->getPosts();
 		$postsArray = [];
-		/** @var Medium\Post $post */
+		/** @var \Sbuckpesch\Medium\Post $post */
 		foreach ( $posts as $post ) {
 			$data                 = $post->toArray();
 			$data['previewImage'] = $post->getPreviewImage( 600 );
+			$data['timestamp']    = $post->getPublishedAt() / 1000;
 			$data['publishedAt']  = date( 'd F Y', $post->getPublishedAt() / 1000 );
 			$postsArray[]         = $data;
 		}
+
+		// Get wordpress posts from App-Arena.com
+		$wpReader = new WordpressReader( 6 );
+		$wpPosts  = $wpReader->getPosts();
+		foreach ( $wpPosts as $post ) {
+			$data                 = $post->toArray();
+			$data['previewImage'] = $post->getPreviewImage();
+			$data['timestamp']    = $post->getPublishedAt();
+			$data['publishedAt']  = date( 'd F Y', $post->getPublishedAt() );
+			$postsArray[]         = $data;
+		}
+
+		// Order posts by date
+		$timestamp = [];
+		foreach ( $postsArray as $key => $row ) {
+			$timestamp[ $key ] = $row['timestamp'];
+		}
+		array_multisort( $timestamp, SORT_DESC, $postsArray );
 
 		$response = [
 			'title' => 'Blog',

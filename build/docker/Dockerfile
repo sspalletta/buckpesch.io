@@ -39,7 +39,7 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
       zip \
       opcache \
     && php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
-    && npm install -g yarn webpack \
+    && npm install -g yarn webpack yo xclap-cli generator-electrode \
     && mkdir /run/php \
     && apt-get remove -y --purge software-properties-common \
     && apt-get -y autoremove \

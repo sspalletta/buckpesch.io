@@ -17,28 +17,48 @@ class HomeController extends AbstractController {
 
 		// Basic data
 		$data['page'] = [
-			'title'        => 'Sebastian Buckpesch - CTO and professional cloud developer',
+			'title'        => 'Stefania Spalletta - International Business Developement Manager',
 			'social_media' => [
-				'facebook' => 'https://www.facebook.com/sbuckpesch',
-				'medium'   => 'https://medium.com/@sbuckpesch',
-				'github'   => 'https://github.com/sbuckpesch',
-				'xing'     => 'https://www.xing.com/profile/Sebastian_Buckpesch',
-				'linkedIn' => 'https://www.linkedin.com/in/sbuckpesch/en',
+				'twitter'  => 'https://www.twitter.com/stefiusviralog',
+				'xing'     => 'https://www.xing.com/profile/Stefania_Spalletta',
+				'linkedIn' => 'https://www.linkedin.com/in/stefaniaspalletta/',
 			],
-			'copyright'    => date( 'Y' ) . ' Sebastian Buckpesch'
+			'copyright'    => date( 'Y' ) . ' Stefania Spalletta',
+			'navigation' => [
+				'logo' => [
+					'title' => 'Stefania Spalletta'
+				]
+			]
 		];
 
+		$data['parallax'] = [
+			'title'        => 'My name is Stefania Spalletta',
+			'items' => [
+				['title' => "I'm an international Business Development Manager", 'visible' => true],
+				['title' => "I'm a strategic thinker", 'visible' => false],
+				['title' => "I'm a networker", 'visible' => false],
+				['title' => "I see opportunities everywhere!", 'visible' => false],
+			],
+			'copyright'    => date( 'Y' ) . ' Stefania Spalletta',
+			'background' => [
+				'src' => '/images/background/parallax.jpg'
+			]
+		];
+
+
+
 		// Add blog section
-		$data['blog'] = $this->getBlog();
+		//$data['blog'] = $this->getBlog();
 
 		// Add about section
 		$data['about'] = [
-			'name'        => 'Sebastian Buckpesch',
-			'location'    => 'Cologne, Germany',
-			'email'       => 's.buckpesch@gmail.com',
-			'image'       => 'https://s3.buckpesch.io/images/sebastian-buckpesch-grey.jpg',
-			'nationality' => 'Germany',
-			'phone'       => '+49 (176) 80092736',
+			'name'        => 'Stefania Spalletta',
+			'slogan'      => "Hallo, ich bin E-Commerce Business Manager aus Köln. Ich halte einen Master of Science Titel sowie ein Advanced Diploma of Marketing.",
+			'location'    => 'Köln, Deutschland',
+			'email'       => 'stefania.spalletta@gmail.com',
+			'image'       => '/images/stefania-spalletta.jpg',
+			'nationality' => 'Italienisch',
+			'phone'       => '+49 (176) 84564363',
 			'resume'      => 'https://s3.buckpesch.io/downloads/Sebastian-Buckpesch-CV.pdf'
 		];
 
@@ -58,64 +78,44 @@ class HomeController extends AbstractController {
 			'title' => 'Skills',
 			'items' => [
 				[
-					'icon'        => 'icon-gears',
-					'title'       => 'Backend',
-					'description' => 'PHP / ZF2, Slim3, NodeJS / Walmart Electrode'
+					'icon'        => 'icon-genius',
+					'title'       => 'Business Development',
+					'description' => 'Key Account Management, Partner Management, Strategic Sales & Acquisition, Partner Enabling'
 				],
 				[
-					'icon'        => 'icon-cloud',
-					'title'       => 'Cloud',
-					'description' => 'AWS (EC2, RDS, VPC, Lambda, ECS, DynamoDB, Cloudformation), Elasticsearch, Serverless Framework'
+					'icon'        => 'icon-megaphone',
+					'title'       => 'Marketing',
+					'description' => 'Messen & Events, Social Media, Integrated Marketing, SEO, E-Mail, Corporate Identity, Analytics'
 				],
 				[
-					'icon'        => 'icon-browser',
-					'title'       => 'Frontend',
-					'description' => 'React, Redux, BackboneJS, Bootstrap4, SCSS'
-				],
-				[
-					'icon'        => 'icon-tools-2',
-					'title'       => 'DevOps',
-					'description' => 'CI/CD, Docker, Webpack, Bamboo, Ubuntu, Apache, SSL'
-				],
-				[
-					'icon'        => 'icon-key',
-					'title'       => 'APIs',
-					'description' => 'HTTP/2, RESTful, GraphQL, SOAP, OAuth2, JWT'
-				],
-				[
-					'icon'        => 'icon-circle-compass',
-					'title'       => 'Architecture',
-					'description' => 'MVC, SOA, Serverless Architecture, Micro-Service-Architecture'
-				],
-				[
-					'icon'        => 'icon-shield',
-					'title'       => 'Data security & privacy',
-					'description' => 'BDSG, EU-DSGVO, EU-GDPR'
-				],
-				[
-					'icon'        => 'icon-speedometer',
-					'title'       => 'Controlling',
-					'description' => 'Shareholder Reporting, KPIs, Web Performance, Analytics'
+					'icon'        => 'icon-basket',
+					'title'       => 'E-Commerce',
+					'description' => 'Shop-Systeme, Integrations/APIs, Payment (PCI), Sales, KPIs'
 				],
 				[
 					'icon'        => 'icon-wallet',
-					'title'       => 'Financials',
-					'description' => 'Financial accounting, DATEV > Exactonline migration, KPI development'
-				],
-				[
-					'icon'        => 'icon-lightbulb',
-					'title'       => 'Pitch & Innovation',
-					'description' => 'Pitchdecks, SaaS Business models, Business opportunity creation'
+					'title'       => 'Credit Management',
+					'description' => 'Lieferanten-Prüfung, Score-Cards, Unternehmensbewertung, Bilanz-Analyse, Konsumenten-Bewertung, Predictive Analytics'
 				],
 				[
 					'icon'        => 'icon-calendar',
-					'title'       => 'Scrum',
-					'description' => 'Product owner, Scrum master'
+					'title'       => 'Produkt-Management',
+					'description' => 'Software, SaaS, Konzeption, Projektmanagement, Schnittstellen'
 				],
 				[
-					'icon'        => 'icon-profile-male',
-					'title'       => 'People management',
-					'description' => 'Leadership, Training, Outsourcing'
+					'icon'        => 'icon-mobile',
+					'title'       => 'IT & Usability',
+					'description' => 'MS Office Suite, HTML, CSS, Wordpress, Typo3, UX, UI'
+				],
+				[
+					'icon'        => 'icon-shield',
+					'title'       => 'Datenschutz & Datensicherheit',
+					'description' => 'BDSG, EU-DSGVO, EU-GDPR'
+				],
+				[
+					'icon'        => 'icon-presentation',
+					'title'       => 'Präsentation & Workshop',
+					'description' => 'Anwender-Schulungen, Training, Workshops, Präsentationen, Key-Notes'
 				],
 			],
 
@@ -179,39 +179,31 @@ class HomeController extends AbstractController {
 			'title' => 'Education',
 			'items' => [
 				[
-					'years'       => '2017',
-					'title'       => 'AWS Solution Architect',
-					'description' => 'Specialisation: E-Business, Online Marketing',
-					'degree'      => 'AWS Certified Solutions Architect - Associate Level',
+					'years'       => '2010 - 2011',
+					'title'       => 'Dublin Business School',
+					'description' => 'E-Commerce, Interactive Marketing Communication, Strategic Marketing, Marketing Services',
+					'degree'      => 'Advanced Diploma in Marketing',
 					'grade'       => false,
-					'image'       => 'https://s3.buckpesch.io/images/education/Solutions-Architect-Associate.png'
+					'image'       => '/images/logos/dbs-logo.png'
 				],
 				[
-					'years'       => '2016',
-					'title'       => 'IHK Köln',
-					'description' => 'Job profiles: Qualified IT specialist, Marketing professionals, Media designers',
-					'degree'      => 'Certified trainer / Zertifizierter Ausbilder',
+					'years'       => '2010',
+					'title'       => 'Paypal',
+					'description' => 'Compliance, Fraud-Prevention',
+					'degree'      => 'Schulungen',
 					'grade'       => false,
-					'image'       => 'https://s3.buckpesch.io/images/education/ihk-logo.png'
+					'image'       => '/images/logos/paypal-logo.png'
 				],
 				[
-					'years'       => '2003 - 2010',
-					'title'       => 'TU Darmstadt',
-					'description' => 'Specialisation: E-Business, Online Marketing',
-					'degree'      => 'Master of Science Bus. Inf. Syst.',
+					'years'       => '2002 - 2007',
+					'title'       => 'Università degli Studi di Palermo, Italien',
+					'description' => 'EU Vergleichsrecht, Ital. Zivilrecht',
+					'degree'      => 'Master of Science European Studies',
 					'grade'       => [
-						'title'       => 'Grade 1.4',
-						'description' => '1.0 (best) to 6.0 (worst)',
+						'title'       => 'Note 110 cum laude',
+						'description' => '(+)110 bis 60(-)',
 					],
-					'image'       => 'https://s3.buckpesch.io/images/education/tud_logo.png'
-				],
-				[
-					'years'       => '2006 - 2007',
-					'title'       => 'UCA Buenos Aires',
-					'description' => 'Specialisation: Operations Research, Marketing',
-					'degree'      => 'Studying abroad',
-					'grade'       => false,
-					'image'       => 'https://s3.buckpesch.io/images/education/UCA-Logo.jpg'
+					'image'       => '/images/logos/universita-palermo.jpg'
 				],
 			],
 

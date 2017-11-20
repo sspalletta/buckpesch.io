@@ -4,8 +4,8 @@
         <div class="row mt-5">
             <!-- section title -->
             <div class="col-md-12 text-center">
-                <span class="title-number">02</span>
-                <h3 class="section-title no-padding">About Me</h3>
+                <span class="title-number">01</span>
+                <h3 class="section-title no-padding">Über mich</h3>
             </div>
             <!-- end section title -->
         </div>
@@ -16,13 +16,12 @@
             </div>
             <div class="col-sm-8 sm-margin-bottom-ten">
                 <div class="no-padding">
-                    <p class="text-large">Hello, I'm CTO & team lead from Cologne, Germany. I
-                        hold a master degree of Business Information Systems from University of Darmstadt.</p>
+                    <p class="text-large">{{ about.slogan }}</p>
                     <ul class="list-line margin-five text-med">
                         <li><span class="font-weight-600">Name:</span> {{ about.name }}</li>
                         <li><span class="font-weight-600">Email:</span> {{ about.email }}</li>
                         <li><span class="font-weight-600">Phone:</span> {{ about.phone }}</li>
-                        <li><span class="font-weight-600">Nationality:</span> {{ about.nationality }}</li>
+                        <li><span class="font-weight-600">Nationalität:</span> {{ about.nationality }}</li>
                     </ul>
                     <!--<a class="highlight-button-dark btn btn-medium button" href="{{ about.resume }}" target="_blank">
                         Download Resume

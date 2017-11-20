@@ -1,20 +1,26 @@
 <!-- parallax section -->
-<section class="parallax1 parallax-fix full-screen no-padding scroll-to-down" onclick="scrollToDown('#blog')"
+<section class="parallax1 parallax-fix full-screen no-padding scroll-to-down" onclick="scrollToDown('#features')"
          id="slider">
     <div class="overlay-gray"></div>
-    <img class="parallax-background-img" src="https://s3.buckpesch.io/images/background-notebook-1920x1100.jpg" alt=""/>
+    <img class="parallax-background-img" src="{{ parallax.background.src }}" alt=""/>
     <div class="container full-screen position-relative">
         <div class="slider-typography">
             <div class="slider-text-middle-main">
                 <div class="slider-text-middle slider-text-middle2 personal-name animated fadeIn">
-                    <h1 class="margin-two">My name is Sebastian Buckpesch</h1>
+                    <h1 class="margin-two">{{ parallax.title }}</h1>
                     <span class="cd-headline letters type text-uppercase">
                         <span class="cd-words-wrapper waiting">
-                            <b class="is-visible main-font text-large font-weight-400">I'm a CTO and team lead</b>
-                            <b class="main-font text-large font-weight-400">I'm fast!</b>
-                            <b class="main-font text-large font-weight-400">I'm a certified AWS solution architect</b>
-                            <b class="main-font text-large font-weight-400">I'm a passionate fullstack developer</b>
-                            <b class="main-font text-large font-weight-400">I really love that shit!</b>
+                            {% for subtitle in parallax.items %}
+                                <!-- subtitle item -->
+                                {% if subtitle.visible %}
+                                    <b class="is-visible main-font text-large font-weight-400">
+                                        {{subtitle.title}}
+                                    </b>
+                                {% else %}
+                                    <b class="main-font text-large font-weight-400">{{subtitle.title}}</b>
+                                {% endif %}
+                                <!-- end subtitle item -->
+                            {% endfor %}
                         </span>
                     </span>
                 </div>
